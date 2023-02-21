@@ -167,6 +167,9 @@ components:
           minimum: 0
           maximum: 10
           example: 9.9
+      required:
+        - "name"
+        - "rating"
     Player:
       type: object
       properties:
@@ -183,3 +186,7 @@ components:
           minimum: 0
           maximum: 10
           example: 9.9
+      required:
+        - "id"
+        - "name"
+        - "rating"

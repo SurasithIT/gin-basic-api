@@ -1,0 +1,8 @@
+# oapi-codegen --config oapi_config.yaml openapi.yaml
+package: players
+generate:
+  client: true
+  models: true
+output: ./players.gen.go
+output-options:
+  skip-prune: false
