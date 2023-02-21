@@ -11,14 +11,16 @@ servers:
   - url: http://localhost:3000/gin-basic-api/api/v1
     description: local
 tags:
-  - name: app
+  - name: application
     description: Application API
+  - name: players
+    description: Example players API
 
 paths:
   /health:
     get:
       tags:
-        - "app"
+        - "application"
       summary: Get app status
       description: Check application is running
       responses:
@@ -30,3 +32,154 @@ paths:
                 type: object
                 example:
                   message: "Ok"
+
+  /players:
+    get:
+      tags:
+        - "players"
+      summary: get all players
+      description: get all players information
+      responses:
+        "200":
+          description: Service return list of all players
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Player"
+        "500":
+          description: Service error
+    post:
+      tags:
+        - "players"
+      summary: create new player
+      description: create a new player
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerRequest"
+      responses:
+        "201":
+          description: Service return created player information
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Player"
+        "400":
+          description: Request body is invalid or duplicate name
+        "500":
+          description: Service error
+  /players/{id}:
+    get:
+      tags:
+        - "players"
+      summary: get player by id
+      description: get player information by id
+      parameters:
+        - name: id
+          in: path
+          description: Id of player
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Service return a player information
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Player"
+        "404":
+          description: Not found player information
+        "500":
+          description: Service error
+    put:
+      tags:
+        - "players"
+      summary: update player data
+      description: update player data by id
+      parameters:
+        - name: id
+          in: path
+          description: Id of player
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Update user object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerRequest"
+      responses:
+        "200":
+          description: Service return a player information
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Player"
+        "400":
+          description: Request body is invalid or duplicate name
+        "404":
+          description: Not found player information
+        "500":
+          description: Service error
+    delete:
+      tags:
+        - "players"
+      summary: delete player
+      description: delete player by id
+      parameters:
+        - name: id
+          in: path
+          description: Id of player
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Service delete player success
+        "404":
+          description: Not found player information
+        "500":
+          description: Service error
+
+components:
+  schemas:
+    PlayerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Lionel Messi
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 10
+          example: 9.9
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: a2207049-c8ed-4976-af50-4e7b7cc482f1
+        name:
+          type: string
+          example: Lionel Messi
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 10
+          example: 9.9
