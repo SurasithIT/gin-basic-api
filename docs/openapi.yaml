@@ -1,0 +1,32 @@
+openapi: 3.0.3
+
+info:
+  title: Gin Basic API
+  description: |-
+    This is a sample API create by [Gin](https://github.com/gin-gonic/gin) framework.
+  contact:
+    url: github.com/surasithit
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/gin-basic-api/api/v1
+    description: local
+tags:
+  - name: app
+    description: Application API
+
+paths:
+  /health:
+    get:
+      tags:
+        - "app"
+      summary: Get app status
+      description: Check application is running
+      responses:
+        "200":
+          description: app is running
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "Ok"
