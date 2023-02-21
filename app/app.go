@@ -26,9 +26,9 @@ func Start() {
 	})
 
 	port := fmt.Sprintf(":%d", AppConfig.HTTPPort)
-	fmt.Printf("Gin is running on port %s\n", port)
+	fmt.Printf("Application is running on port %s\n", port)
 	err := router.Run(port)
 	if err != nil {
-		fmt.Printf("Gin running is error: %v\n", err)
+		fmt.Printf("Application startup has an error: %v\n", err)
 	}
 }
