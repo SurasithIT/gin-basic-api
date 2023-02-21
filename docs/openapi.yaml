@@ -14,7 +14,7 @@ tags:
   - name: application
     description: Application API
   - name: players
-    description: Example players API
+    description: players API
 
 paths:
   /health:
