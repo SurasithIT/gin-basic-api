@@ -1,27 +1,17 @@
 package players
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoutes(router *gin.RouterGroup) *gin.RouterGroup {
+func InitRoutes(router *gin.RouterGroup, controller *Controller) *gin.RouterGroup {
 	rGroup := router.Group("/players")
 
-	rGroup.GET("", mockSuccessHandler())
-	rGroup.POST("", mockSuccessHandler())
-	rGroup.GET("/:id", mockSuccessHandler())
-	rGroup.PUT("/:id", mockSuccessHandler())
-	rGroup.DELETE("/:id", mockSuccessHandler())
+	rGroup.GET("", func(c *gin.Context) { controller.GetPlayers(c) })
+	rGroup.POST("", func(c *gin.Context) { controller.CreatePlayer(c) })
+	rGroup.GET("/:id", func(c *gin.Context) { controller.GetPlayerById(c) })
+	rGroup.PUT("/:id", func(c *gin.Context) { controller.UpdatePlayer(c) })
+	rGroup.DELETE("/:id", func(c *gin.Context) { controller.DeletePlayer(c) })
 
 	return rGroup
-}
-
-func mockSuccessHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Ok",
-		})
-	}
 }

@@ -14,6 +14,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/surasithit/gin-basic-api/internal/players"
+	"github.com/surasithit/gin-basic-api/internal/players/repository"
+	"github.com/surasithit/gin-basic-api/internal/players/usecase"
 )
 
 func Start() {
@@ -30,7 +32,7 @@ func Start() {
 		MaxAge:           24 * time.Hour,
 	}))
 
-	initRoutes(router, AppConfig)
+	initialApp(router, AppConfig)
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", AppConfig.HTTPPort),
@@ -58,13 +60,20 @@ func Start() {
 	log.Println("Server exiting")
 }
 
-func initRoutes(router *gin.Engine, config *Config) {
+func initialApp(router *gin.Engine, config *Config) {
 	rGroup := router.Group(AppConfig.HTTPPrefix)
-	rGroup.GET("/health", func(c *gin.Context) {
+	rGroup.GET("/health", SuccessHandler())
+
+	playerRepository := repository.NewRepository()
+	playerService := usecase.NewService(playerRepository)
+	playerController := players.NewController(playerService)
+	players.InitRoutes(rGroup, playerController)
+}
+
+func SuccessHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Ok",
 		})
-	})
-
-	players.InitRoutes(rGroup)
+	}
 }
