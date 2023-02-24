@@ -9,6 +9,6 @@ type Player struct {
 
 // PlayerRequest defines model for PlayerRequest.
 type PlayerRequest struct {
-	Name   string  `json:"name"`
-	Rating float32 `json:"rating"`
+	Name   string  `json:"name"  binding:"required"`
+	Rating float32 `json:"rating" binding:"required,gte=0,lte=10"`
 }
