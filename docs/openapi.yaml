@@ -10,6 +10,19 @@ info:
 servers:
   - url: http://localhost:3000/gin-basic-api/api/v1
     description: local
+  - url: "{scheme}://{host}/gin-basic-api/api/v1"
+    description: custom server
+    variables:
+      schema:
+        enum:
+          - "http"
+          - "https"
+        default: http
+        description: scheme
+      host:
+        enum:
+          - "localhost:3000"
+        default: localhost:3000
 tags:
   - name: application
     description: Application API
@@ -50,6 +63,11 @@ paths:
                   $ref: "#/components/schemas/Player"
         "500":
           description: Service error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/APIErrorResponse"
     post:
       tags:
         - "players"
@@ -73,20 +91,18 @@ paths:
           description: Request body is invalid or duplicate name
         "500":
           description: Service error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/APIErrorResponse"
+
   /players/{id}:
     get:
       tags:
         - "players"
       summary: get player by id
       description: get player information by id
-      parameters:
-        - name: id
-          in: path
-          description: Id of player
-          required: true
-          schema:
-            type: string
-            format: uuid
       responses:
         "200":
           description: Service return a player information
@@ -99,19 +115,16 @@ paths:
           description: Not found player information
         "500":
           description: Service error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/APIErrorResponse"
     put:
       tags:
         - "players"
       summary: update player data
       description: update player data by id
-      parameters:
-        - name: id
-          in: path
-          description: Id of player
-          required: true
-          schema:
-            type: string
-            format: uuid
       requestBody:
         description: Update user object
         content:
@@ -132,19 +145,16 @@ paths:
           description: Not found player information
         "500":
           description: Service error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/APIErrorResponse"
     delete:
       tags:
         - "players"
       summary: delete player
       description: delete player by id
-      parameters:
-        - name: id
-          in: path
-          description: Id of player
-          required: true
-          schema:
-            type: string
-            format: uuid
       responses:
         "200":
           description: Service delete player success
@@ -152,6 +162,13 @@ paths:
           description: Not found player information
         "500":
           description: Service error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/APIErrorResponse"
+    parameters:
+      - $ref: "#/components/parameters/id"
 
 components:
   schemas:
@@ -190,3 +207,18 @@ components:
         - "id"
         - "name"
         - "rating"
+    APIErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error, please try again later."
+  parameters:
+    id:
+      name: id
+      in: path
+      description: Id of player
+      required: true
+      schema:
+        type: string
+        format: uuid
