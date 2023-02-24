@@ -1,0 +1,60 @@
+# HTTP Client file using HTTPYac https://httpyac.github.io/guide/installation_vscode.html
+
+@HOST=localhost:3000
+@SAMPLE_ID=e9f3538e-d322-4c83-b794-310592598f56
+
+{{+
+  exports.defaultHeaders = {
+    'Content-Type': 'application/json',
+  };
+}}
+
+### Health check
+# @name HealthCheck
+
+GET /gin-basic-api/api/v1/health HTTP/1.1
+Host: {{HOST}}
+
+### Get all players
+# @name GetAllPlayer
+
+GET /gin-basic-api/api/v1/players HTTP/1.1
+Host: {{HOST}}
+
+### Get player by Id
+# @name GetPlayerById
+
+GET /gin-basic-api/api/v1/players/{{SAMPLE_ID}} HTTP/1.1
+Host: {{HOST}}
+
+### Create new player
+# @name CreateNewPlayer
+
+POST /gin-basic-api/api/v1/players HTTP/1.1
+Host: {{HOST}}
+...defaultHeaders
+
+{
+    "name": "Lionel Messi",
+    "rating": 9.9
+}
+
+###  Update player
+# @name UpdatePlayer
+# @ref CreateNewPlayer
+
+PUT /gin-basic-api/api/v1/players/{{CreateNewPlayer.id}} HTTP/1.1
+Host: {{HOST}}
+...defaultHeaders
+
+{
+    "name": "Lionel Messi",
+    "rating": 10
+}
+
+###  Delete player
+# @name DeletePlayer
+# @ref CreateNewPlayer
+
+DELETE /gin-basic-api/api/v1/players/{{CreateNewPlayer.id}} HTTP/1.1
+Host: {{HOST}}
