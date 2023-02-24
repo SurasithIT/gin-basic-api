@@ -1,6 +1,9 @@
 package repository
 
-import "github.com/surasithit/gin-basic-api/internal/players/models"
+import (
+	"github.com/google/uuid"
+	"github.com/surasithit/gin-basic-api/internal/players/models"
+)
 
 type PlayerRepositoryInterface interface {
 	FindAll() ([]*models.Player, error)
@@ -20,33 +23,67 @@ func NewRepository() *PlayerRepository {
 	return &PlayerRepository{}
 }
 
-var mockPlayer = &models.Player{
-	Id:     "e9f3538e-d322-4c83-b794-310592598f56",
-	Name:   "Lionel Messi",
-	Rating: 9.9,
+var mockPlayers = []*models.Player{
+	{
+		Id:     "e9f3538e-d322-4c83-b794-310592598f56",
+		Name:   "Lionel Messi",
+		Rating: 9.9,
+	},
+	{
+		Id:     "3d6ee7d6-2934-400d-97ad-7da2fb41f7c5",
+		Name:   "Cristiano Ronaldo",
+		Rating: 9.9,
+	},
+	{
+		Id:     "a190b9fd-f5e9-47e7-bf2e-7bb9c32e64dc",
+		Name:   "Neymar Jr.",
+		Rating: 9.7,
+	},
 }
 
 // CreateOne implements PlayerRepositoryInterface
-func (*PlayerRepository) CreateOne(newPlayer *models.Player) (*models.Player, error) {
-	panic("unimplemented")
+func (r *PlayerRepository) CreateOne(newPlayer *models.Player) (*models.Player, error) {
+	newPlayer.Id = uuid.NewString()
+	mockPlayers = append(mockPlayers, newPlayer)
+	return newPlayer, nil
 }
 
 // DeleteById implements PlayerRepositoryInterface
-func (*PlayerRepository) DeleteById(id string) error {
-	panic("unimplemented")
+func (r *PlayerRepository) DeleteById(id string) error {
+	for i, player := range mockPlayers {
+		if player.Id == id {
+			mockPlayers = append(mockPlayers[:i], mockPlayers[i+1:]...)
+		}
+	}
+	return nil
 }
 
 // FindAll implements PlayerRepositoryInterface
-func (*PlayerRepository) FindAll() ([]*models.Player, error) {
-	panic("unimplemented")
+func (r *PlayerRepository) FindAll() ([]*models.Player, error) {
+	return mockPlayers, nil
 }
 
 // FindOneById implements PlayerRepositoryInterface
-func (*PlayerRepository) FindOneById(id string) (*models.Player, error) {
-	return mockPlayer, nil
+func (r *PlayerRepository) FindOneById(id string) (*models.Player, error) {
+	res := &models.Player{}
+	for _, player := range mockPlayers {
+		if player.Id == id {
+			res = player
+			break
+		}
+	}
+	return res, nil
 }
 
 // UpdateById implements PlayerRepositoryInterface
-func (*PlayerRepository) UpdateById(id string, player *models.Player) (*models.Player, error) {
-	panic("unimplemented")
+func (r *PlayerRepository) UpdateById(id string, player *models.Player) (*models.Player, error) {
+	res := &models.Player{}
+	for _, p := range mockPlayers {
+		if p.Id == id {
+			p = player
+			res = p
+			break
+		}
+	}
+	return res, nil
 }

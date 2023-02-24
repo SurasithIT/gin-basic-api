@@ -103,6 +103,12 @@ func (c *Controller) UpdatePlayer(ctx *gin.Context) {
 		return
 	}
 	player := &dto.PlayerRequest{}
+	if err := ctx.ShouldBindJSON(player); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 	updatedPlayer, err := c.PlayerService.UpdatePlayer(id, player)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
