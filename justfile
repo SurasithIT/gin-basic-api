@@ -38,3 +38,6 @@ docker-run:
 
 release:
     git sv next-version
+
+project-structure:
+    tree -d -L 3 .

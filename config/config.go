@@ -1,4 +1,4 @@
-package app
+package config
 
 import (
 	"log"
@@ -11,11 +11,12 @@ type Config struct {
 	HTTPPrefix string `envconfig:"HTTP_PATH_PREFIX" default:""`
 }
 
-var AppConfig = &Config{}
-
-func LoadConfig() {
+func LoadConfig() (*Config, error) {
+	AppConfig := &Config{}
 	err := envconfig.Process("", AppConfig)
 	if err != nil {
 		log.Fatal(err.Error())
+		return nil, err
 	}
+	return AppConfig, nil
 }
