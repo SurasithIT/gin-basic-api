@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: "gin_basic_api"
+      POSTGRES_USER: "gin_basic_api"
+      POSTGRES_PASSWORD: "gin_basic_api"
+      POSTGRES_PORT: 5432
