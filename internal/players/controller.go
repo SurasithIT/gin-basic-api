@@ -20,6 +20,7 @@ type Controller struct {
 	PlayerService *usecase.Service
 }
 
+// Implement interface
 var _ PlayerControllerInterface = (*Controller)(nil)
 
 func NewController(playerService *usecase.Service) *Controller {
