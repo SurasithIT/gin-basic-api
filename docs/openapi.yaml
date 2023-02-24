@@ -207,7 +207,7 @@ components:
         - "id"
         - "name"
         - "rating"
-    APIErrorResponse:
+    ApiErrorResponse:
       type: object
       properties:
         error:
