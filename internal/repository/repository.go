@@ -5,7 +5,7 @@ import (
 )
 
 type Repository struct {
-	PlayerRepository *player.PlayerRepository
+	PlayerRepository *player.Repository
 }
 
 func NewRepository() *Repository {

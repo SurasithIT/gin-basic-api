@@ -6,13 +6,13 @@ import (
 )
 
 type Service struct {
-	PlayerRepository *player.PlayerRepository
+	PlayerRepository *player.Repository
 }
 
 // Implement interface
 var _ domain.PlayerUsecase = (*Service)(nil)
 
-func NewService(playerRepository *player.PlayerRepository) *Service {
+func NewService(playerRepository *player.Repository) *Service {
 	return &Service{
 		PlayerRepository: playerRepository,
 	}

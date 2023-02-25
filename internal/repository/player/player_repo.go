@@ -2,25 +2,18 @@ package player
 
 import (
 	"github.com/google/uuid"
+	"github.com/surasithit/gin-basic-api/domain"
 	"github.com/surasithit/gin-basic-api/internal/model"
 )
 
-type PlayerRepositoryInterface interface {
-	FindAll() ([]*model.Player, error)
-	FindOneById(id string) (*model.Player, error)
-	CreateOne(newPlayer *model.Player) (*model.Player, error)
-	UpdateById(id string, player *model.Player) (*model.Player, error)
-	DeleteById(id string) error
-}
-
-type PlayerRepository struct {
+type Repository struct {
 }
 
 // Implement interface
-var _ PlayerRepositoryInterface = (*PlayerRepository)(nil)
+var _ domain.PlayerRepository = (*Repository)(nil)
 
-func NewRepository() *PlayerRepository {
-	return &PlayerRepository{}
+func NewRepository() *Repository {
+	return &Repository{}
 }
 
 var mockPlayers = []*model.Player{
@@ -41,15 +34,15 @@ var mockPlayers = []*model.Player{
 	},
 }
 
-// CreateOne implements PlayerRepositoryInterface
-func (r *PlayerRepository) CreateOne(newPlayer *model.Player) (*model.Player, error) {
+// CreateOne implements RepositoryInterface
+func (r *Repository) CreateOne(newPlayer *model.Player) (*model.Player, error) {
 	newPlayer.Id = uuid.NewString()
 	mockPlayers = append(mockPlayers, newPlayer)
 	return newPlayer, nil
 }
 
-// DeleteById implements PlayerRepositoryInterface
-func (r *PlayerRepository) DeleteById(id string) error {
+// DeleteById implements RepositoryInterface
+func (r *Repository) DeleteById(id string) error {
 	for i, player := range mockPlayers {
 		if player.Id == id {
 			mockPlayers = append(mockPlayers[:i], mockPlayers[i+1:]...)
@@ -58,13 +51,13 @@ func (r *PlayerRepository) DeleteById(id string) error {
 	return nil
 }
 
-// FindAll implements PlayerRepositoryInterface
-func (r *PlayerRepository) FindAll() ([]*model.Player, error) {
+// FindAll implements RepositoryInterface
+func (r *Repository) FindAll() ([]*model.Player, error) {
 	return mockPlayers, nil
 }
 
-// FindOneById implements PlayerRepositoryInterface
-func (r *PlayerRepository) FindOneById(id string) (*model.Player, error) {
+// FindOneById implements RepositoryInterface
+func (r *Repository) FindOneById(id string) (*model.Player, error) {
 	res := &model.Player{}
 	for _, player := range mockPlayers {
 		if player.Id == id {
@@ -75,8 +68,8 @@ func (r *PlayerRepository) FindOneById(id string) (*model.Player, error) {
 	return res, nil
 }
 
-// UpdateById implements PlayerRepositoryInterface
-func (r *PlayerRepository) UpdateById(id string, player *model.Player) (*model.Player, error) {
+// UpdateById implements RepositoryInterface
+func (r *Repository) UpdateById(id string, player *model.Player) (*model.Player, error) {
 	res := &model.Player{}
 	for _, p := range mockPlayers {
 		if p.Id == id {
