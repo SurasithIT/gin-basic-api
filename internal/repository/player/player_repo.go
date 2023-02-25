@@ -1,15 +1,15 @@
-package repository
+package player
 
 import (
 	"github.com/google/uuid"
-	"github.com/surasithit/gin-basic-api/internal/players/models"
+	"github.com/surasithit/gin-basic-api/internal/model"
 )
 
 type PlayerRepositoryInterface interface {
-	FindAll() ([]*models.Player, error)
-	FindOneById(id string) (*models.Player, error)
-	CreateOne(newPlayer *models.Player) (*models.Player, error)
-	UpdateById(id string, player *models.Player) (*models.Player, error)
+	FindAll() ([]*model.Player, error)
+	FindOneById(id string) (*model.Player, error)
+	CreateOne(newPlayer *model.Player) (*model.Player, error)
+	UpdateById(id string, player *model.Player) (*model.Player, error)
 	DeleteById(id string) error
 }
 
@@ -23,7 +23,7 @@ func NewRepository() *PlayerRepository {
 	return &PlayerRepository{}
 }
 
-var mockPlayers = []*models.Player{
+var mockPlayers = []*model.Player{
 	{
 		Id:     "e9f3538e-d322-4c83-b794-310592598f56",
 		Name:   "Lionel Messi",
@@ -42,7 +42,7 @@ var mockPlayers = []*models.Player{
 }
 
 // CreateOne implements PlayerRepositoryInterface
-func (r *PlayerRepository) CreateOne(newPlayer *models.Player) (*models.Player, error) {
+func (r *PlayerRepository) CreateOne(newPlayer *model.Player) (*model.Player, error) {
 	newPlayer.Id = uuid.NewString()
 	mockPlayers = append(mockPlayers, newPlayer)
 	return newPlayer, nil
@@ -59,13 +59,13 @@ func (r *PlayerRepository) DeleteById(id string) error {
 }
 
 // FindAll implements PlayerRepositoryInterface
-func (r *PlayerRepository) FindAll() ([]*models.Player, error) {
+func (r *PlayerRepository) FindAll() ([]*model.Player, error) {
 	return mockPlayers, nil
 }
 
 // FindOneById implements PlayerRepositoryInterface
-func (r *PlayerRepository) FindOneById(id string) (*models.Player, error) {
-	res := &models.Player{}
+func (r *PlayerRepository) FindOneById(id string) (*model.Player, error) {
+	res := &model.Player{}
 	for _, player := range mockPlayers {
 		if player.Id == id {
 			res = player
@@ -76,8 +76,8 @@ func (r *PlayerRepository) FindOneById(id string) (*models.Player, error) {
 }
 
 // UpdateById implements PlayerRepositoryInterface
-func (r *PlayerRepository) UpdateById(id string, player *models.Player) (*models.Player, error) {
-	res := &models.Player{}
+func (r *PlayerRepository) UpdateById(id string, player *model.Player) (*model.Player, error) {
+	res := &model.Player{}
 	for _, p := range mockPlayers {
 		if p.Id == id {
 			p = player

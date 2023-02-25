@@ -14,9 +14,10 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/surasithit/gin-basic-api/config"
-	"github.com/surasithit/gin-basic-api/internal/players"
-	"github.com/surasithit/gin-basic-api/internal/players/repository"
-	"github.com/surasithit/gin-basic-api/internal/players/usecase"
+	"github.com/surasithit/gin-basic-api/internal/controller"
+	"github.com/surasithit/gin-basic-api/internal/repository"
+	"github.com/surasithit/gin-basic-api/internal/routes"
+	"github.com/surasithit/gin-basic-api/internal/usecase"
 )
 
 func Start() {
@@ -66,15 +67,16 @@ func Start() {
 
 func initialApp(router *gin.Engine, config *config.Config) {
 	rGroup := router.Group(config.HTTPPrefix)
-	rGroup.GET("/health", SuccessHandler())
+	rGroup.GET("/health", HealthCheckHandler())
 
-	playerRepository := repository.NewRepository()
-	playerService := usecase.NewService(playerRepository)
-	playerController := players.NewController(playerService)
-	players.InitRoutes(rGroup, playerController)
+	repo := repository.NewRepository()
+	usecases := usecase.NewService(repo)
+	controllers := controller.NewController(usecases)
+
+	routes.InitialRoutes(rGroup, controllers)
 }
 
-func SuccessHandler() gin.HandlerFunc {
+func HealthCheckHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Ok",

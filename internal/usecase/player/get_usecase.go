@@ -1,9 +1,9 @@
-package usecase
+package player
 
 import (
 	"fmt"
 
-	"github.com/surasithit/gin-basic-api/internal/players/dto"
+	"github.com/surasithit/gin-basic-api/internal/dto"
 )
 
 func (s *Service) GetPlayers() ([]*dto.Player, error) {

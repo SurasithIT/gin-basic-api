@@ -1,11 +1,11 @@
-package players
+package player
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/surasithit/gin-basic-api/internal/players/dto"
-	"github.com/surasithit/gin-basic-api/internal/players/usecase"
+	"github.com/surasithit/gin-basic-api/internal/dto"
+	"github.com/surasithit/gin-basic-api/internal/usecase/player"
 )
 
 type PlayerControllerInterface interface {
@@ -16,21 +16,21 @@ type PlayerControllerInterface interface {
 	DeletePlayer(ctx *gin.Context)
 }
 
-type Controller struct {
-	PlayerService *usecase.Service
+type PlayerController struct {
+	PlayerService *player.Service
 }
 
 // Implement interface
-var _ PlayerControllerInterface = (*Controller)(nil)
+var _ PlayerControllerInterface = (*PlayerController)(nil)
 
-func NewController(playerService *usecase.Service) *Controller {
-	return &Controller{
+func NewController(playerService *player.Service) *PlayerController {
+	return &PlayerController{
 		PlayerService: playerService,
 	}
 }
 
 // CreatePlayer implements PlayerControllerInterface
-func (c *Controller) CreatePlayer(ctx *gin.Context) {
+func (c *PlayerController) CreatePlayer(ctx *gin.Context) {
 	newPlayer := &dto.PlayerRequest{}
 	if err := ctx.ShouldBindJSON(newPlayer); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -50,7 +50,7 @@ func (c *Controller) CreatePlayer(ctx *gin.Context) {
 }
 
 // DeletePlayer implements PlayerControllerInterface
-func (c *Controller) DeletePlayer(ctx *gin.Context) {
+func (c *PlayerController) DeletePlayer(ctx *gin.Context) {
 	id, success := ctx.Params.Get("id")
 	if !success {
 		ctx.AbortWithStatus(http.StatusBadRequest)
@@ -67,7 +67,7 @@ func (c *Controller) DeletePlayer(ctx *gin.Context) {
 }
 
 // GetPlayerById implements PlayerControllerInterface
-func (c *Controller) GetPlayerById(ctx *gin.Context) {
+func (c *PlayerController) GetPlayerById(ctx *gin.Context) {
 	id, success := ctx.Params.Get("id")
 	if !success {
 		ctx.AbortWithStatus(http.StatusBadRequest)
@@ -84,7 +84,7 @@ func (c *Controller) GetPlayerById(ctx *gin.Context) {
 }
 
 // GetPlayers implements PlayerControllerInterface
-func (c *Controller) GetPlayers(ctx *gin.Context) {
+func (c *PlayerController) GetPlayers(ctx *gin.Context) {
 	player, err := c.PlayerService.GetPlayers()
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -96,7 +96,7 @@ func (c *Controller) GetPlayers(ctx *gin.Context) {
 }
 
 // UpdatePlayer implements PlayerControllerInterface
-func (c *Controller) UpdatePlayer(ctx *gin.Context) {
+func (c *PlayerController) UpdatePlayer(ctx *gin.Context) {
 	id, success := ctx.Params.Get("id")
 	if !success {
 		ctx.AbortWithStatus(http.StatusBadRequest)

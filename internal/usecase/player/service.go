@@ -1,8 +1,8 @@
-package usecase
+package player
 
 import (
-	"github.com/surasithit/gin-basic-api/internal/players/dto"
-	"github.com/surasithit/gin-basic-api/internal/players/repository"
+	"github.com/surasithit/gin-basic-api/internal/dto"
+	"github.com/surasithit/gin-basic-api/internal/repository/player"
 )
 
 type PlayerServiceInterface interface {
@@ -14,10 +14,10 @@ type PlayerServiceInterface interface {
 }
 
 type Service struct {
-	PlayerRepository *repository.PlayerRepository
+	PlayerRepository *player.PlayerRepository
 }
 
-func NewService(playerRepository *repository.PlayerRepository) *Service {
+func NewService(playerRepository *player.PlayerRepository) *Service {
 	return &Service{
 		PlayerRepository: playerRepository,
 	}

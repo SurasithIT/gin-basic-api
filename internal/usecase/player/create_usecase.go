@@ -1,10 +1,10 @@
-package usecase
+package player
 
 import (
 	"fmt"
 
-	"github.com/surasithit/gin-basic-api/internal/players/dto"
-	"github.com/surasithit/gin-basic-api/internal/players/models"
+	"github.com/surasithit/gin-basic-api/internal/dto"
+	models "github.com/surasithit/gin-basic-api/internal/model"
 )
 
 func (s *Service) CreatePlayer(newPlayer *dto.PlayerRequest) (*dto.Player, error) {
