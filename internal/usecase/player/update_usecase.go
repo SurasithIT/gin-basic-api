@@ -3,10 +3,10 @@ package player
 import (
 	"fmt"
 
-	"github.com/surasithit/gin-basic-api/internal/dto"
+	"github.com/surasithit/gin-basic-api/domain"
 )
 
-func (s *Service) UpdatePlayer(id string, player *dto.PlayerRequest) (*dto.Player, error) {
+func (s *Service) UpdatePlayer(id string, player *domain.PlayerRequest) (*domain.Player, error) {
 	existPlayer, err := s.PlayerRepository.FindOneById(id)
 	if err != nil {
 		return nil, fmt.Errorf("error to get player: %v", err)
@@ -19,7 +19,7 @@ func (s *Service) UpdatePlayer(id string, player *dto.PlayerRequest) (*dto.Playe
 	if err != nil {
 		return nil, fmt.Errorf("error to get player: %v", err)
 	}
-	playerDto := &dto.Player{
+	playerDto := &domain.Player{
 		Id:     updatedPlayer.Id,
 		Name:   updatedPlayer.Name,
 		Rating: updatedPlayer.Rating,

@@ -3,17 +3,17 @@ package player
 import (
 	"fmt"
 
-	"github.com/surasithit/gin-basic-api/internal/dto"
+	"github.com/surasithit/gin-basic-api/domain"
 )
 
-func (s *Service) GetPlayers() ([]*dto.Player, error) {
+func (s *Service) GetPlayers() ([]*domain.Player, error) {
 	players, err := s.PlayerRepository.FindAll()
 	if err != nil {
 		return nil, fmt.Errorf("error to get all players: %v", err)
 	}
-	playersDto := []*dto.Player{}
+	playersDto := []*domain.Player{}
 	for _, player := range players {
-		playersDto = append(playersDto, &dto.Player{
+		playersDto = append(playersDto, &domain.Player{
 			Id:     player.Id,
 			Name:   player.Name,
 			Rating: player.Rating,
@@ -22,12 +22,12 @@ func (s *Service) GetPlayers() ([]*dto.Player, error) {
 	return playersDto, nil
 }
 
-func (s *Service) GetPlayersId(id string) (*dto.Player, error) {
+func (s *Service) GetPlayerById(id string) (*domain.Player, error) {
 	player, err := s.PlayerRepository.FindOneById(id)
 	if err != nil {
 		return nil, fmt.Errorf("error to get player: %v", err)
 	}
-	playerDto := &dto.Player{
+	playerDto := &domain.Player{
 		Id:     player.Id,
 		Name:   player.Name,
 		Rating: player.Rating,

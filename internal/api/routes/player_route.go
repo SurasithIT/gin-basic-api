@@ -2,10 +2,13 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/surasithit/gin-basic-api/internal/controller/player"
+	"github.com/surasithit/gin-basic-api/internal/api/controller"
+	"github.com/surasithit/gin-basic-api/internal/usecase"
 )
 
-func initPlayerRoutes(router *gin.RouterGroup, playerController *player.PlayerController) *gin.RouterGroup {
+func initPlayerRoutes(router *gin.RouterGroup, usecase *usecase.Service) *gin.RouterGroup {
+	playerController := controller.NewPlayerController(usecase.PlayerService)
+
 	rGroup := router.Group("/players")
 
 	rGroup.GET("", playerController.GetPlayers)

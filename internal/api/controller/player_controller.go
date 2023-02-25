@@ -1,10 +1,10 @@
-package player
+package controller
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/surasithit/gin-basic-api/internal/dto"
+	"github.com/surasithit/gin-basic-api/domain"
 	"github.com/surasithit/gin-basic-api/internal/usecase/player"
 )
 
@@ -23,7 +23,7 @@ type PlayerController struct {
 // Implement interface
 var _ PlayerControllerInterface = (*PlayerController)(nil)
 
-func NewController(playerService *player.Service) *PlayerController {
+func NewPlayerController(playerService *player.Service) *PlayerController {
 	return &PlayerController{
 		PlayerService: playerService,
 	}
@@ -31,7 +31,7 @@ func NewController(playerService *player.Service) *PlayerController {
 
 // CreatePlayer implements PlayerControllerInterface
 func (c *PlayerController) CreatePlayer(ctx *gin.Context) {
-	newPlayer := &dto.PlayerRequest{}
+	newPlayer := &domain.PlayerRequest{}
 	if err := ctx.ShouldBindJSON(newPlayer); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -73,7 +73,7 @@ func (c *PlayerController) GetPlayerById(ctx *gin.Context) {
 		ctx.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
-	player, err := c.PlayerService.GetPlayersId(id)
+	player, err := c.PlayerService.GetPlayerById(id)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -102,7 +102,7 @@ func (c *PlayerController) UpdatePlayer(ctx *gin.Context) {
 		ctx.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
-	player := &dto.PlayerRequest{}
+	player := &domain.PlayerRequest{}
 	if err := ctx.ShouldBindJSON(player); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),

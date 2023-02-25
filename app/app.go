@@ -14,9 +14,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/surasithit/gin-basic-api/config"
-	"github.com/surasithit/gin-basic-api/internal/controller"
+	"github.com/surasithit/gin-basic-api/internal/api/routes"
 	"github.com/surasithit/gin-basic-api/internal/repository"
-	"github.com/surasithit/gin-basic-api/internal/routes"
 	"github.com/surasithit/gin-basic-api/internal/usecase"
 )
 
@@ -70,10 +69,9 @@ func initialApp(router *gin.Engine, config *config.Config) {
 	rGroup.GET("/health", HealthCheckHandler())
 
 	repo := repository.NewRepository()
-	usecases := usecase.NewService(repo)
-	controllers := controller.NewController(usecases)
+	usecases := usecase.NewService(config, repo)
 
-	routes.InitialRoutes(rGroup, controllers)
+	routes.InitialRoutes(rGroup, usecases)
 }
 
 func HealthCheckHandler() gin.HandlerFunc {
