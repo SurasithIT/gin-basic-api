@@ -15,6 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/surasithit/gin-basic-api/config"
 	"github.com/surasithit/gin-basic-api/internal/api/routes"
+	"github.com/surasithit/gin-basic-api/internal/helper/utils"
 	"github.com/surasithit/gin-basic-api/internal/repository"
 	"github.com/surasithit/gin-basic-api/internal/usecase"
 )
@@ -68,8 +69,10 @@ func initialApp(router *gin.Engine, config *config.Config) {
 	rGroup := router.Group(config.HTTPPrefix)
 	rGroup.GET("/health", HealthCheckHandler())
 
-	repo := repository.NewRepository()
-	usecases := usecase.NewService(config, repo)
+	utilService := utils.NewService(config)
+
+	repo := repository.NewRepository(config, utilService)
+	usecases := usecase.NewService(config, repo, utilService)
 
 	routes.InitialRoutes(rGroup, usecases)
 }
